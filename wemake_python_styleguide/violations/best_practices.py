@@ -651,3 +651,34 @@ class RedundantFinallyViolation(ASTViolation):
     #: Error message shown to the user.
     error_template = 'Found `finally` in `try` block without `except`'
     code = 437
+
+
+class YieldInInitializerViolation(ASTViolation):
+    """
+    Forbids using the ``yield`` keyword in a class initializer (``__init__()``).
+
+    Reasoning:
+        An initializer should never be a generator, since it breaks a number of OOP patterns.
+
+    Solution:
+        Do not use ``yield`` in initializers.
+
+    Example::
+
+        # Correct:
+        class SomeClass(object):
+            def __init__():
+                # Initialize parameters
+
+        # Wrong:
+        class SomeClass(object):
+            def __init__():
+                # Initialize parameters
+                yield 1
+
+    Note:
+            Returns Z438 as error code
+
+    """
+    error_template = 'Found `yield` in class initializer.'
+    code = 438
